@@ -5,7 +5,7 @@ on:
   push:
     branches: #Evaluate if we are going to remove this trigger or not
       - project_8
-  
+ 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
