@@ -1,24 +1,21 @@
-name: EKS Deployment Pipeline
+name: Docker Image CI
 
 on:
-  workflow_dispatch: {}
   push:
-    branches: #Evaluate if we are going to remove this trigger or not
-      - project_8
- 
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+env:
+  ECR_REPOSITORY: demo-sv
+  EKS_CLUSTER_NAME: demo-cluster
+  AWS_REGION: us-east-1
+
 jobs:
-  build-and-deploy:
+
+  build:
+  
+    name: Deployment
     runs-on: ubuntu-latest
-
-    steps:
-      #Step 1: Checkout code from the project folder to GitHub Server
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Get directory
-        run: |
-          ls
-          pwd
 
       #Step 2: Test application, we'll use docker-compose to test the application.
       - name: Test application 
