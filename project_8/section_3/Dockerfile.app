@@ -1,4 +1,4 @@
-#Base image and multi-stage build
+#Base image and multi-stage build_
 FROM node:14-alpine as build
 #Set the working dir
 WORKDIR /app
