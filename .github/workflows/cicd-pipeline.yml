@@ -42,17 +42,19 @@ jobs:
           cd project_8/section_3
 
           #Build NodeJS app image
-          docker build -t caroldelwing/p8app -f Dockerfile.app .
+          docker build -t project8app -f Dockerfile.app .
 
           #Build MongoDB image
-          docker build -t caroldelwing/p8mongodb -f Dockerfile.mongodb .
+          docker build -t project8mongodb -f Dockerfile.mongodb .
 
           #Log in to Docker Hub
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
           #Push the images
-          docker push caroldelwing/p8app
-          docker push caroldelwing/p8mongodb
+          docker tag project8app santospardos/sanvalero:project8app
+          docker push santospardos/sanvalero:project8app
+          docker tag project8app santospardos/sanvalero:project8mongodb
+          docker push santospardos/sanvalero:project8mongodb
 
       #Step 4: Deploy application to EKS
       - name: Deploy to EKS
@@ -61,9 +63,11 @@ jobs:
           #Set up AWS credentials
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws configure se aws-region: ${{env.AWS_REGION}}
 
           #Update kubeconfig for EKS cluster
-          aws eks --region us-east-1 update-kubeconfig --name eks-wcd-project8
+          aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
           #Apply Kubernetes manifests
           cd project_8/section_3
