@@ -16,7 +16,7 @@ spec:
         app: app
     spec:
       containers:
-      - image: caroldelwing/p8app
+      - image: santospardos/sanvalero:project_34_app
         name: app
         ports:
           - containerPort: 3000
